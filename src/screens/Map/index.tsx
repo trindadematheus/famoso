@@ -3,7 +3,9 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import Modal from 'react-modal';
 
 import EventInfoTooltip from '../../components/EventInfoTooltip'
+import ModalContract from '../../components/ModalContract';
 import ModalStore from '../../components/ModalStore';
+import recordLabels from '../../data/record-labels';
 import { useSinger } from '../../hook/use-singer'
 import { Event } from '../../types/event'
 import generateRandomLocation from '../../utils/generate-random-location'
@@ -38,6 +40,14 @@ function MapScreen() {
     const { songs, artist } = useSinger()
 
     const [isModalStoreOpen, setIsModalStoreOpen] = useState(false)
+    const [isModalContractOpen, setIsModalContractOpen] = useState(false)
+
+    const increase = useMemo(() => {
+        return {
+            name: artist.recordLabelId ? recordLabels[artist.recordLabelId - 1].name : '',
+            value: artist.recordLabelId ? recordLabels[artist.recordLabelId - 1].concertIncrease : 0,
+        }
+    }, [artist])
 
     const events: Event[] = useMemo(() => {
         if (songs.length > 0) {
@@ -45,13 +55,13 @@ function MapScreen() {
                 centerLat: currentLocation.lat,
                 centerLong: currentLocation.long,
                 radiusInMeters: 4000,
-                count: 5,
+                count: 2 + increase.value,
                 songs: songs
             })
         }
 
         return []
-    }, [songs])
+    }, [songs, artist])
 
     return (
         <>
@@ -60,12 +70,12 @@ function MapScreen() {
                     <S.LeftContent>
                         <h2 className="singer-name">{artist.name}</h2>
 
-                        <p className="promoter">Without contract</p>
-                        <p className="money">F$ {artist.money}</p>
+                        <p className="money">F${artist.money}</p>
+                        <p className="promoter">{increase.name}</p>
                     </S.LeftContent>
 
                     <S.RightContent>
-                        <button className='btn-menu' >CONTRACTS</button>
+                        <button onClick={() => setIsModalContractOpen(true)} className='btn-menu' >CONTRACTS</button>
                         <button onClick={() => setIsModalStoreOpen(true)} className='btn-menu'>STORE</button>
                     </S.RightContent>
                 </S.MenuContainer>
@@ -93,6 +103,15 @@ function MapScreen() {
                 overlayClassName="Overlay"
             >
                 <ModalStore />
+            </Modal>
+
+            <Modal
+                isOpen={isModalContractOpen}
+                onRequestClose={() => setIsModalContractOpen(false)}
+                className="Modal"
+                overlayClassName="Overlay"
+            >
+                <ModalContract />
             </Modal>
         </>
     )

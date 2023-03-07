@@ -3,11 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import YouTube from 'react-youtube'
 import Swal from 'sweetalert2'
 
+import recordLabels from '../../data/record-labels'
 import { useSinger } from '../../hook/use-singer'
 import * as S from './styles'
 
 function ShowScreen() {
-    const { songs, handleMoney } = useSinger()
+    const { songs, handleMoney, artist } = useSinger()
 
     const navigate = useNavigate()
     const params = useParams()
@@ -18,14 +19,23 @@ function ShowScreen() {
         return findedSong
     }, [songs])
 
+    const increase = useMemo(() => {
+        return {
+            label: artist.recordLabelId ? `+ F$${recordLabels[artist.recordLabelId - 1].rewardIncrease}` : '',
+            value: artist.recordLabelId ? recordLabels[artist.recordLabelId - 1].rewardIncrease : 0,
+        }
+    }, [artist])
+
     function handleOnEnd() {
         Swal.fire(
             `Parabéns, show completado!`,
-            `+ F$${songData?.value}`,
+            `+ F$${songData?.value} ${increase.label}`,
             'success'
         ).then((result) => {
             if (result.isConfirmed) {
-                handleMoney('add', songData?.value || 1)
+                const value = (songData ? songData.value : 0) + increase.value
+
+                handleMoney('add', value)
                 navigate('/map')
             }
         })

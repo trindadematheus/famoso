@@ -25,7 +25,8 @@ export function SingerProvider({ children }: SingerProviderProps) {
     const [artist, setArtist] = useState<Artist>({
         name: '',
         level: 0,
-        money: 0
+        money: 0,
+        recordLabelId: null
     })
 
     useEffect(() => {
@@ -48,7 +49,8 @@ export function SingerProvider({ children }: SingerProviderProps) {
         setArtist({
             name: parsedArtistData.name,
             level: parsedArtistData.level,
-            money: parsedArtistData.money
+            money: parsedArtistData.money,
+            recordLabelId: parsedArtistData.recordLabelId
         })
 
         navigate('/map')
