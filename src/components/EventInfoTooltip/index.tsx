@@ -25,7 +25,7 @@ function EventInfoTooltip({ event }: EventInfoTooltipProps) {
                 <p className="song-name">{event.song.title}</p>
                 <p className="song-name">F${event.song.value} <span className="bonus">{increase}</span> </p>
 
-                <button className='action' onClick={() => navigate(`/show/${event.song.videoId}`)} >Cantar</button>
+                <button className='action' onClick={() => navigate(`/show/${event.song.videoId}`)} >SING</button>
             </S.Container>
         </>
     )

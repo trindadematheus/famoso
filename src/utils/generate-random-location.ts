@@ -35,7 +35,7 @@ export default function generateRandomEvents({ centerLat, centerLong, radiusInMe
 
         events.push({
             id: uuidv4(),
-            title: 'Festival da Uva',
+            title: 'Some Party',
             song: songs[index],
             location: generateRandomLocation({ centerLat, centerLong, radiusInMeters }),
         })

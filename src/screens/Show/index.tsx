@@ -28,7 +28,7 @@ function ShowScreen() {
 
     function handleOnEnd() {
         Swal.fire(
-            `Parabéns, show completado!`,
+            `Congratulations! you completed the concert`,
             `+ F$${songData?.value} ${increase.label}`,
             'success'
         ).then((result) => {
@@ -43,8 +43,8 @@ function ShowScreen() {
 
     function handleCancel() {
         Swal.fire({
-            title: 'Deseja cancelar o show?',
-            text: "Para cancelar o show você precisará pagar uma multa aos contratantes.",
+            title: 'Do you want to cancel the concert?',
+            text: "To cancel the concert you will need to pay a fine to the contractors.",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -67,10 +67,10 @@ function ShowScreen() {
                         videoId={params.videoId}
                         opts={{
                             width: '1000',
-                            // playerVars: {
-                            //     controls: 0,
-                            //     disablekb: 1
-                            // }
+                            playerVars: {
+                                controls: 0,
+                                disablekb: 1
+                            }
                         }}
                         onEnd={handleOnEnd}
                     />
@@ -79,7 +79,7 @@ function ShowScreen() {
                         <h1 className="title">{songData?.title}</h1>
 
                         <div className="actions">
-                            <button onClick={handleCancel} className="action danger">CANCELAR SHOW</button>
+                            <button onClick={handleCancel} className="action danger">LEAVE CONCERT</button>
                         </div>
                     </S.EventData>
                 </S.Container>

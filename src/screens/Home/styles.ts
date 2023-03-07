@@ -13,7 +13,24 @@ export const Container = styled.div`
     justify-content: center;
 `
 
-export const Form = styled.div`
+export const Card = styled.div`
+    background-color: #000;
+    border-radius: 14px;
+    padding: 40px;
+
+    .title {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: white;
+    }
+
+    .label {
+        font-size: 12px;
+        color: #ccc;
+    }
+`
+
+export const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 8px;

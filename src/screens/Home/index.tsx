@@ -1,21 +1,25 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import storeItems from '../../data/store'
 
+import storeItems from '../../data/store'
 import { useSinger } from '../../hook/use-singer'
+import { Artist } from '../../types/artist'
 import * as S from './styles'
 
 function Home() {
     const navigate = useNavigate()
     const { setArtist, setSongs } = useSinger()
 
-    const [name, setName] = useState('Matheus')
+    const [name, setName] = useState('')
 
-    async function handleStart() {
-        const artistData = {
-            name,
+    async function handleStart(e: any) {
+        e.preventDefault()
+
+        const artistData: Artist = {
+            name: name || 'John Doe',
             level: 0,
-            money: 0
+            money: 0,
+            recordLabelId: null
         }
 
         setArtist(artistData)
@@ -31,11 +35,16 @@ function Home() {
         <>
             <S.Wrapper>
                 <S.Container>
-                    <S.Form>
-                        <input value={name} onChange={evt => setName(evt.target.value)} className='input' type="text" placeholder='Seu nome' />
+                    <S.Card>
+                        <h1 className="title">Famoso</h1>
 
-                        <button type='button' onClick={handleStart} className="btn">COMEÇAR</button>
-                    </S.Form>
+                        <S.Form onSubmit={handleStart} >
+                            <p className="label">Your name:</p>
+                            <input value={name} onChange={evt => setName(evt.target.value)} className='input' type="text" placeholder='Your name' />
+
+                            <button onClick={handleStart} className="btn">START</button>
+                        </S.Form>
+                    </S.Card>
                 </S.Container>
             </S.Wrapper>
         </>

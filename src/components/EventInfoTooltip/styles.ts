@@ -11,10 +11,11 @@ export const Container = styled.div`
 
     .action {
         margin-top: 16px;
-        background-color: #111;
+        background-color: #3483fa;
+        color: black;
+        font-weight: bold;
         padding: 8px 40px;
         border-radius: 4px;
-        color: white;
 
         transition: all 400ms;
 
