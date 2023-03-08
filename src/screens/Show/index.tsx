@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import YouTube from 'react-youtube'
 import Swal from 'sweetalert2'
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 import recordLabels from '../../data/record-labels'
 import { useSinger } from '../../hook/use-singer'
@@ -10,6 +11,7 @@ import * as S from './styles'
 function ShowScreen() {
     const { songs, handleMoney, artist } = useSinger()
 
+    const { transcript } = useSpeechRecognition();
     const navigate = useNavigate()
     const params = useParams()
 
@@ -27,6 +29,8 @@ function ShowScreen() {
     }, [artist])
 
     function handleOnEnd() {
+        SpeechRecognition.stopListening()
+
         Swal.fire(
             `Congratulations! you completed the concert`,
             `+ F$${songData?.value} ${increase.label}`,
@@ -53,6 +57,7 @@ function ShowScreen() {
             cancelButtonText: 'Voltar para o show'
         }).then((result) => {
             if (result.isConfirmed) {
+                SpeechRecognition.stopListening()
                 handleMoney('remove', songData?.value || 1)
                 navigate('/map')
             }
@@ -72,7 +77,9 @@ function ShowScreen() {
                                 disablekb: 1
                             }
                         }}
+                        onPlay={() => SpeechRecognition.startListening({ continuous: true, language: 'en-US' })}
                         onEnd={handleOnEnd}
+                        onPause={() => SpeechRecognition.stopListening()}
                     />
 
                     <S.EventData>
@@ -82,6 +89,8 @@ function ShowScreen() {
                             <button onClick={handleCancel} className="action danger">LEAVE CONCERT</button>
                         </div>
                     </S.EventData>
+
+                    <p style={{ color: 'white' }} >{transcript}</p>
                 </S.Container>
             </S.Wrapper>
         </>

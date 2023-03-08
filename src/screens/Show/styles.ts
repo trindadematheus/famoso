@@ -12,6 +12,12 @@ export const Container = styled.div`
 `
 
 export const EventData = styled.div`
+    margin-bottom: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     .title {
         margin-top: 24px;
         font-size: 24px;
